@@ -7,13 +7,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.slf4j.Slf4j;
 import tacos.Taco;
 import tacos.Ingredient;
 import tacos.Ingredient.Type;
+
+import javax.validation.Valid;
 
 
 @Slf4j
@@ -51,4 +55,17 @@ public class DesignTacoController {
                 .filter(x -> x.getType().equals(type))
                 .collect(Collectors.toList());
     }
+
+    @PostMapping
+    public String processDesign(@Valid Taco design, Errors errors){
+        if (errors.hasErrors()){
+            return "design";
+        }
+
+        //Save the draft of the prepared taco
+        //I'll be back here later in chapter 3
+        log.info("Processing taco design: " + design);
+        return "redirect:/orders/current";
+    }
+
 }
