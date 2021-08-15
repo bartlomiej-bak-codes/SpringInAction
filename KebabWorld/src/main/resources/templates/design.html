@@ -12,6 +12,10 @@
 
 <form method="POST" th:object="${kebab}">
 
+       <span class="validationError"
+             th:if="${#fields.hasErrors('ingredients')}"
+             th:errors="*{ingredients}">Ingredient Error</span>
+
     <div class="grid">
 
         <div class="integrient-group" id="kind">

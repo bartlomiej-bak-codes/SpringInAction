@@ -10,33 +10,29 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>taco-cloud</name>
-    <description>Taco Cloud Example</description>
+    <name>kebab-clod</name>
+    <description>Kebab World</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
         <project.build.sourceEncoding>
-            UTF-8
-        </project.build.sourceEncoding>
+            UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>
-            UTF-8
-        </project.reporting.outputEncoding>
+            UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
-        <!-- tag::thymeleaf[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        <!-- end::thymeleaf[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -48,13 +44,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- tag::devTools[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- end::devTools[] -->
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -76,15 +70,24 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <!-- <scope>compileOnly</scope> -->
+            <scope>provided</scope>
         </dependency>
 
+        <!-- tag::springDataJpa[] -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- end::springDataJpa[] -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

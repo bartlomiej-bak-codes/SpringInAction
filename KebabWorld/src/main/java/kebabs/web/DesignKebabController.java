@@ -3,70 +3,79 @@ package kebabs.web;
 import kebabs.Ingredient;
 import kebabs.Ingredient.Type;
 import kebabs.Kebab;
+import kebabs.Order;
+import kebabs.data.IngredientRepository;
+import kebabs.data.KebabRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @RequestMapping("/design")
+@SessionAttributes("order")
 public class DesignKebabController {
 
-    @ModelAttribute
-    public void addIngredientsToModel(Model model){
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("KBWB", "Kebab w bułce", Ingredient.Type.KIND),
-                new Ingredient("KBWT", "Kebab w tortilli", Ingredient.Type.KIND),
-                new Ingredient("KBBX", "Kebab box", Ingredient.Type.KIND),
-                new Ingredient("BRNA", "Baranina", Ingredient.Type.PROTEIN),
-                new Ingredient("KRCZ", "Kurczak", Ingredient.Type.PROTEIN),
-                new Ingredient("SATA", "Sałata", Ingredient.Type.VEGGIES),
-                new Ingredient("PMDR", "Pomidor", Ingredient.Type.VEGGIES),
-                new Ingredient("OGRK", "Ogórek", Ingredient.Type.VEGGIES),
-                new Ingredient("KPUT", "Kapusta", Ingredient.Type.VEGGIES),
-                new Ingredient("KRBW", "Karbowane", Ingredient.Type.CHIPS),
-                new Ingredient("PRST", "Proste", Ingredient.Type.CHIPS),
-                new Ingredient("CZNK", "Czosnkowy", Ingredient.Type.SAUCE),
-                new Ingredient("OSTR", "Ostry", Ingredient.Type.SAUCE),
-                new Ingredient("LAGO", "Łagodny", Ingredient.Type.SAUCE)
-        );
+    private final IngredientRepository ingredientRepository;
+    private final KebabRepository kebabRepository;
+
+    @Autowired
+    public DesignKebabController(IngredientRepository ingredientRepository, KebabRepository kebabRepository) {
+        this.ingredientRepository = ingredientRepository;
+        this.kebabRepository = kebabRepository;
+    }
+
+    @ModelAttribute(name = "order")
+    public Order order() {
+        return new Order();
+    }
+
+    @ModelAttribute(name = "kebab")
+    public Kebab design() {
+        return new Kebab();
+    }
+
+
+    @GetMapping
+    public String showDesignForm(Model model) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredientRepository.findAll().forEach(i -> ingredients.add(i));
 
         Type[] types = Ingredient.Type.values();
-        for (Type type : types){
+        for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(),
                     filterByType(ingredients, type));
         }
-    }
 
-    @GetMapping
-    public String showDesignForm(Model model){
-        model.addAttribute("kebab", new Kebab());
         return "design";
     }
+
+
+    @PostMapping
+    public String processDesign(@Valid Kebab kebab, Errors errors, @ModelAttribute Order order) {
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
+        Kebab saved = kebabRepository.save(kebab);
+        order.addDesign(saved);
+
+        return "redirect:/orders/current";
+    }
+
     private List<Ingredient> filterByType(
             List<Ingredient> ingredients, Type type) {
         return ingredients
                 .stream()
                 .filter(x -> x.getType().equals(type))
                 .collect(Collectors.toList());
-    }
-
-    @PostMapping
-    public String processDesign(@Valid Kebab kebab, Errors errors){
-        if(errors.hasErrors()){
-            return "design";
-        }
-        log.info("Przetwarzanie projektu kebaba:"  + kebab);
-        return "redirect:/orders/current";
     }
 }
