@@ -51,9 +51,6 @@ public class Order implements Serializable {
     @ManyToMany(targetEntity = Kebab.class)
     private List<Kebab> kebabs = new ArrayList<>();
 
-    @ManyToOne
-    private User user;
-
     public void addDesign(Kebab design){
         this.kebabs.add(design);
     }
