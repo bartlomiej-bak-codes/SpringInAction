@@ -7,10 +7,14 @@
     <title>Aplikacja Kebab Cloud</title>
 </head>
 <body>
-<form method="POST" th:action="@{/orders}" th:object="${order}">
+<form method="POST" th:action="@{/orders}" th:object="${order}" id="orderForm">
     <h1>Zamów przygotowanego kebaba!</h1>
 
     <img th:src="@{/images/KebabCloud.png}"/>
+
+    <form method="POST" th:action="@{/logout}" id="logoutForm">
+        <input type="submit" value="Wyloguj się"/>
+    </form>
 
     <h3>Twoje kebaby w zamówieniu:</h3>
     <ul>

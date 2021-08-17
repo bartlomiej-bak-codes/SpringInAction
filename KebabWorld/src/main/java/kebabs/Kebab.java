@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Kebab {
 
     @ManyToMany(targetEntity = Ingredient.class)
     @Size(min = 1, message = "Musisz wybrać przynajmniej 1 składnik.")
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     @PrePersist
     void createdAt() {
