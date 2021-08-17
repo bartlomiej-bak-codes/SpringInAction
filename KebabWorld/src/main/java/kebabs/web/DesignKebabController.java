@@ -60,8 +60,9 @@ public class DesignKebabController {
 
 
     @PostMapping
-    public String processDesign(@Valid Kebab kebab, Errors errors, @ModelAttribute Order order) {
+    public String processDesign(@Valid Kebab kebab, Errors errors, @ModelAttribute Order order, Model model) {
         if (errors.hasErrors()) {
+            showDesignForm(model);
             return "design";
         }
 

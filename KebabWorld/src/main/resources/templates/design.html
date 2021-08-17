@@ -61,7 +61,7 @@
     <div>
         <h3>Nadaj nazwę przygotowanemu kebabowi:</h3>
         <input type="text" th:field="*{name}">
-        <span class="validatorError"
+        <span class="validationError"
               th:if="${#fields.hasErrors('name')}"
               th:error="*{name}">Nazwa powinna się składać z co najmniej 5 znaków</span>
         <br/>
