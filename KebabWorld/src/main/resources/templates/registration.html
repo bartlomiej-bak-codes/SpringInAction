@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikacja Kebab Cloud</title>
+</head>
+<body>
+<h1>Rejestrowanie</h1>
+<img th:src="@{/images/KebabCloud.png}"/>
+
+<form method="POST" th:action="@{/register}" id="registerForm">
+
+    <label for="username">Nazwa użytkownika: </label>
+    <input type="text" name="username"><br/>
+
+    <label for="password">Hasło: </label>
+    <input type="text" name="password"><br/>
+
+    <label for="fullname">Pełne imię i nazwisko: </label>
+    <input type="text" name="fullname"><br/>
+
+    <label for="street">Ulica: </label>
+    <input type="text" name="street"><br/>
+
+    <label for="city">Miejscowość: </label>
+    <input type="text" name="city"><br/>
+
+    <label for="state">Województwo: </label>
+    <input type="text" name="state"><br/>
+
+    <label for="zip">Kod pocztowy: </label>
+    <input type="text" name="zip"><br/>
+
+    <label for="phoneNumber">Numer telefonu: </label>
+    <input type="text" name="phoneNumber"><br/>
+
+    <input type="submit" value="Zarejestruj"/>
+
+</form>
+</body>
+</html>

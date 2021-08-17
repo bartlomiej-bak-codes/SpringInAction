@@ -4,8 +4,10 @@ import kebabs.Ingredient;
 import kebabs.Ingredient.Type;
 import kebabs.Kebab;
 import kebabs.Order;
+import kebabs.User;
 import kebabs.data.IngredientRepository;
 import kebabs.data.KebabRepository;
+import kebabs.data.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +29,13 @@ public class DesignKebabController {
 
     private final IngredientRepository ingredientRepository;
     private final KebabRepository kebabRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public DesignKebabController(IngredientRepository ingredientRepository, KebabRepository kebabRepository) {
+    public DesignKebabController(IngredientRepository ingredientRepository, KebabRepository kebabRepository, UserRepository userRepository) {
         this.ingredientRepository = ingredientRepository;
         this.kebabRepository = kebabRepository;
+        this.userRepository = userRepository;
     }
 
     @ModelAttribute(name = "order")
@@ -45,7 +50,9 @@ public class DesignKebabController {
 
 
     @GetMapping
-    public String showDesignForm(Model model) {
+    public String showDesignForm(Model model, Principal principal) {
+        log.info("  --- Designing taco");
+
         List<Ingredient> ingredients = new ArrayList<>();
         ingredientRepository.findAll().forEach(i -> ingredients.add(i));
 
@@ -55,11 +62,16 @@ public class DesignKebabController {
                     filterByType(ingredients, type));
         }
 
+        String username = principal.getName();
+        User user = userRepository.findByUsername(username);
+        model.addAttribute("user", user);
+
         return "design";
     }
 
 
     @PostMapping
+
     public String processDesign(@Valid Kebab kebab, Errors errors, @ModelAttribute Order order, Model model) {
         if (errors.hasErrors()) {
             showDesignForm(model);

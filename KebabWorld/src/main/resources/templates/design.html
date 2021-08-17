@@ -8,13 +8,18 @@
 </head>
 <body>
 <h1>Przygotuj własnego kebaba!</h1>
+<h2>Czujesz głód, <span th:text="${user.fullname}">NAME</span>?</h2>
 <img th:src="@{images/KebabCloud.png}">
 
-<form method="POST" th:object="${kebab}">
+<form method="POST" th:action="@{/logout}" id="logoutForm">
+    <input type="submit" value="Wyloguj się"/>
+</form>
 
-       <span class="validationError"
-             th:if="${#fields.hasErrors('ingredients')}"
-             th:errors="*{ingredients}">Ingredient Error</span>
+<form method="POST" th:object="${kebab}" th:action="@{/design}" id="kebabForm">
+
+    <span class="validationError"
+          th:if="${#fields.hasErrors('ingredients')}"
+          th:errors="*{ingredients}">Ingredient Error</span>
 
     <div class="grid">
 
@@ -65,6 +70,8 @@
               th:if="${#fields.hasErrors('name')}"
               th:error="*{name}">Nazwa powinna się składać z co najmniej 5 znaków</span>
         <br/>
+
+
         <button>Wyślij swoje zamówienie</button>
 
     </div>
