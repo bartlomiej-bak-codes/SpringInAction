@@ -71,16 +71,10 @@ public class DesignKebabController {
 
 
     @PostMapping
-    public String processDesign(@Valid Kebab kebab, Errors errors, @ModelAttribute Order order, @ModelAttribute Model model) {
-        if (errors.hasErrors()) {
-            List<Ingredient> ingredients = new ArrayList<>();
-            ingredientRepository.findAll().forEach(i -> ingredients.add(i));
 
-            Type[] types = Ingredient.Type.values();
-            for (Type type : types) {
-                model.addAttribute(type.toString().toLowerCase(),
-                        filterByType(ingredients, type));
-            }
+    public String processDesign(@Valid Kebab kebab, Errors errors, @ModelAttribute Order order, Model model) {
+        if (errors.hasErrors()) {
+            showDesignForm(model);
             return "design";
         }
 
